@@ -9,7 +9,7 @@ import torch.optim as optim
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-from torchvision.models import resnet18
+from resnet_anchor import ResNet_Model
 
 # Argument parser
 parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
@@ -40,23 +40,9 @@ test_loader = DataLoader(
     batch_size=args.test_batch_size, shuffle=False, **kwargs)
 
 # Model
-class Net(nn.Module):
-    def __init__(self):
-        super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
-        self.conv2 = nn.Conv2d(10, 20, kernel_size=5)
-        self.fc1 = nn.Linear(320, 50)
-        self.fc2 = nn.Linear(50, 10)
+num_classes = 10
 
-    def forward(self, x):
-        x = F.relu(F.max_pool2d(self.conv1(x), 2))
-        x = F.relu(F.max_pool2d(self.conv2(x), 2))
-        x = torch.flatten(x, 1)
-        x = F.relu(self.fc1(x))
-        x = self.fc2(x)
-        return F.log_softmax(x, dim=1)
-
-model = Net().to(device)
+model = ResNet_Model(name = "resnet34",num_classes=num_classes)
 optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.7)
 

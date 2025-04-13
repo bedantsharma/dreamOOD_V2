@@ -9,7 +9,7 @@ import torch.optim as optim
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-from resnet_anchor import ResNet_Model
+from scripts.resnet_anchor import ResNet_Model
 
 # Argument parser
 parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
